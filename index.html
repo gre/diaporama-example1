@@ -20,6 +20,7 @@
 
   <script src="./build.js"></script>
   <script>
+window.diaporama = null;
 Qajax.getJSON("./diaporama.json").then(function (json) {
   var div = document.getElementById("diaporama");
   
@@ -61,6 +62,8 @@ Qajax.getJSON("./diaporama.json").then(function (json) {
         break;
     }
   });
+  
+  window.diaporama = diaporama;
 
 }).done();
   </script>
