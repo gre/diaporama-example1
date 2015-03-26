@@ -20,30 +20,43 @@
   <script>
 Qajax.getJSON("./diaporama.json").then(function (json) {
   var div = document.getElementById("diaporama");
-
-  diaporama = Diaporama(div, json, {
-    width: window.innerWidth,
-    height: window.innerHeight,
+  
+  var diaporama = Diaporama(div, {
+    data: json,
     autoplay: true,
     loop: true
   });
-
-  window.addEventListener("resize", function () {
-    diaporama.width = window.innerWidth;
-    diaporama.height = window.innerHeight;
-  });
-
+  
+  var threshold = 1024 * 512;
+  
+  function resize () {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    diaporama.width = w;
+    diaporama.height = h;
+    diaporama.resolution = Math.min(window.devicePixelRatio||1, Math.ceil((threshold) / (w * h))); // heuristic to degrade the quality for higher resolution
+  }
+  
+  window.addEventListener("resize", resize);
+  resize();
+  
   document.body.addEventListener("keydown", function (e) {
     switch (e.which) {
-    case 37: // Left
-      diaporama.prev();
-      break;
-    case 39: // Right
-      diaporama.next();
-      break;
-    case 32: // Space
-      diaporama.paused = !diaporama.paused;
-      break;
+      case 38: // Up
+        diaporama.playbackRate *= 1.5;
+        break;
+      case 40: // Down
+        diaporama.playbackRate /= 1.5;
+        break;
+      case 37: // Left
+        diaporama.prev();
+        break;
+      case 39: // Right
+        diaporama.next();
+        break;
+      case 32: // Space
+        diaporama.paused = !diaporama.paused;
+        break;
     }
   });
 
