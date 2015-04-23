@@ -18,20 +18,20 @@
 
   <div id="diaporama"></div>
 
-  <script src="./build.js"></script>
+  <script src="./diaporama.bundle.js"></script>
   <script>
 window.diaporama = null;
 Qajax.getJSON("./diaporama.json").then(function (json) {
   var div = document.getElementById("diaporama");
-  
+
   var diaporama = Diaporama(div, {
     data: json,
     autoplay: true,
     loop: true
   });
-  
+
   var threshold = 1024 * 512;
-  
+
   function resize () {
     var w = window.innerWidth;
     var h = window.innerHeight;
@@ -39,10 +39,10 @@ Qajax.getJSON("./diaporama.json").then(function (json) {
     diaporama.height = h;
     diaporama.resolution = Math.min(window.devicePixelRatio||1, Math.ceil((threshold) / (w * h))); // heuristic to degrade the quality for higher resolution
   }
-  
+
   window.addEventListener("resize", resize);
   resize();
-  
+
   document.body.addEventListener("keydown", function (e) {
     switch (e.which) {
       case 38: // Up
@@ -62,7 +62,7 @@ Qajax.getJSON("./diaporama.json").then(function (json) {
         break;
     }
   });
-  
+
   window.diaporama = diaporama;
 
 }).done();
